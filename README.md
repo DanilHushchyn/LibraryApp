@@ -24,7 +24,7 @@ To initialize the project, follow these steps:
    - username: librarian
    - password: sword123
 ### Visitor 
-   - username: librarian
+   - username: visitor
    - password: sword123
 
 ## Login Page: 
