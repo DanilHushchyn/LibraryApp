@@ -1,0 +1,179 @@
+{%  load static %}
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{# Read the documentation for more information #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg"   href="{% static 'core/imgs/library.png' %}">
+    <title>
+        Вход
+    </title>
+    <link rel="stylesheet" href="{% static 'core/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+      <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+      <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'core/adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+      <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'core/adminlte/dist/css/adminlte.css' %}">
+    <link rel="stylesheet" href="{% static 'core/base.css' %}">
+    {% block head %}
+
+    {% endblock %}
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+      <div class="login-logo">
+          <img src="{% static 'core/imgs/library.png' %}" style="width: 150px;height: auto" alt="Library">
+      </div>
+      <!-- /.login-logo -->
+            <div class="card card-primary card-outline card-outline-tabs">
+                <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs-custom align-items-stretch"   id="custom-tabs-four-tab" role="tablist">
+                        <li class="nav-item flex-grow-1 text-center">
+                            <a class="nav-link active" id="custom-tabs-for-visitor-tab" data-toggle="pill" 
+                               href="#custom-tabs-for-visitor" role="tab" aria-controls="custom-tabs-for-visitor" 
+                               aria-selected="true">Для читателей</a>
+                        </li>
+                        <li class="nav-item flex-grow-1 text-center">
+                            <a class="nav-link" id="custom-tabs-for-librarian-tab" data-toggle="pill" 
+                               href="#custom-tabs-for-librarian" role="tab" aria-controls="custom-tabs-for-librarian" 
+                               aria-selected="false">Для библиотекарей</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-for-visitor" 
+                         role="tabpanel" aria-labelledby="custom-tabs-for-visitor-tab">
+                        <form id="login-visitor" action="{% url 'login' %}" method="post" >
+                            {% csrf_token %}
+                            <input type="text" name="username" class="form-control mb-3 rounded-0" 
+                                   placeholder="Логин" required="" id="id_visitor_username">
+                            <input type="password" name="password" class="form-control mb-3 rounded-0" 
+                                   placeholder="Пароль" required="" id="id_visitor_password">
+                            <div class="row">
+                              <div class="col-8 mb-3">
+                                <div class="icheck-primary">
+                                  <input type="checkbox" name="remember_me" id="id_visitor_remember_me">
+                                  <input type="hidden" name="role" id="id_visitor_role" value="visitor">
+                                  <label for="id_visitor_remember_me">
+                                    Запомнить меня
+                                  </label>
+                                </div>
+                              </div>
+                              <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-block">Вход</button>
+                              </div>
+                            </div>
+                        </form>
+                        <p class="mb-0 text-center">
+                            <a href="{% url 'register_visitor' %}" class="text-center">Зарегистрироваться как читатель</a>
+                        </p>  
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-for-librarian" 
+                         role="tabpanel" aria-labelledby="custom-tabs-for-librarian-tab">
+                        <form id="login-librarian" method="post" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <input type="text" name="username" class="form-control mb-3 rounded-0" 
+                                   placeholder="Логин" required="" id="id_librarian_username">
+                            <input type="password" name="password" class="form-control mb-3 rounded-0" 
+                                   placeholder="Пароль" required="" id="id_librarian_password">
+                            <div class="row">
+                              <div class="col-8 mb-3">
+                                <div class="icheck-primary">
+                                  <input type="checkbox" name="remember_me" id="id_librarian_remember_me">
+                                  <input type="hidden" name="role" id="id_librarian_role" value="librarian">
+                                  <label for="id_librarian_remember_me">
+                                    Запомнить меня
+                                  </label>
+                                </div>
+                              </div>
+
+                              <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-block">Вход</button>
+                              </div>
+                                
+                            </div>
+                        </form>
+                        <p class="mb-0 text-center">
+                            <a href="{% url 'register_librarian' %}" class="text-center">Зарегистрироваться как библиотекарь</a>
+                        </p>  
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+<!-- /.login-box -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" 
+            integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{% static 'core/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'core/adminlte/dist/js/adminlte.min.js' %}"></script>
+    <script src="https://kit.fontawesome.com/cce590ac92.js" crossorigin="anonymous"></script>
+    <script src="{% static 'core/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" 
+            integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" 
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $("#login-visitor").validate({
+            errorClass: "error fail-alert",
+            validClass: "valid success-alert",
+            ignore : '.ignore',
+            rules : {
+                'username': {
+                    required: true
+                },
+                'password': {
+                    required: true
+                },
+            },
+            messages : {
+                'username': {
+                    required: "Обязательно укажите username"
+                },
+                'password': {
+                    required: "Обязательно укажите Пароль"
+                },
+            }
+
+        });
+        $("#login-librarian").validate({
+            errorClass: "error fail-alert",
+            validClass: "valid success-alert",
+            ignore : '.ignore',
+            rules : {
+                'username': {
+                    required: true,
+                },
+                'password': {
+                    required: true
+                },
+            },
+            messages : {
+                'username': {
+                    required: "Обязательно укажите username"
+                },
+                'password': {
+                    required: "Обязательно укажите Пароль"
+                },
+            }
+
+        });
+    </script>
+      {% block script %}
+      {% endblock %}
+</body>
+</html>

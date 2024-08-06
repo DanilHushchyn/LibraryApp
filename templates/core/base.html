@@ -1,0 +1,186 @@
+{%  load static %}
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{# Read the documentation for more information #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'core/imgs/library.png' %}">
+    <title>
+        {% block title %}
+
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'core/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+      <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+      <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'core/adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+      <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'core/adminlte/dist/css/adminlte.css' %}">
+    <link rel="stylesheet" href="{% static 'core/base.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.min.css">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light pb-1">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav d-flex flex-row align-items-center justify-content-center text-black">
+      <li class="nav-item">
+        <a class="nav-link pr-1 text-black" data-widget="pushmenu" href="#" role="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-black d-none d-sm-inline" href="#" role="info">
+            Личный кабинет
+        </a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto d-flex flex-row align-items-center justify-content-center">
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa-solid fa-crown"></i>
+          <span class="d-none d-sm-inline" style="font-size: 15px">{{ request.user }}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <div class="dropdown-item card card-widget widget-user p-0 m-0">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-info">
+                <h3 class="widget-user-username">{{ request.user }}</h3>
+              </div>
+              <div class="widget-user-image">
+
+                <img class="img-circle elevation-1" 
+                     src="{% static 'core/imgs/user.png' %}" 
+                     alt="User Avatar">
+              </div>
+              <div class="card-footer">
+                <div class="text-center">
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-block btn-default">Выход</button>
+                    </form>
+                </div>
+                <!-- /.row -->
+              </div>
+            </div>
+        </div>
+      </li>
+    </ul>
+
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-gray-dark elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link text-center p-2">
+      <img src="{% static 'core/imgs/library.png' %}" alt="AdminLTE Logo" class="" style="width: 2.25rem;">
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column mb-3" data-widget="treeview" role="menu" data-accordion="false" style="font-size: 14px">
+            {% if user.librarian %}
+               <li class="nav-item pb-1" style="height: 3rem;">
+                <a href="{% url 'debtors' %}" class="nav-link h-100 d-flex flex-row align-items-center ps-2">
+                    <i class="fa-solid fa-people-group"></i>
+                    <span class="p-2 fs-6">Список должников</span></i>
+                </a>
+              </li>
+            {% endif %}
+            {% if user.visitor %}
+              <li class="nav-item pb-1" style="height: 3rem;">
+                <a href="{% url 'books' %}" class="nav-link h-100 d-flex flex-row align-items-center ps-2">
+                    <i class="fa-solid fa-book"></i>
+                    <span class="p-2 fs-6">Список книг</span></i>
+
+                </a>
+              </li>
+            {% endif %}
+            {% if user.visitor %}
+              <li class="nav-item pb-1" style="height: 3rem;">
+                <a href="{% url 'my_books' %}" class="nav-link h-100 d-flex flex-row align-items-center ps-2">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    <span class="p-2 fs-6">Мои книги</span></i>
+                </a>
+              </li>
+            {% endif %}      
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <li class="nav-item pb-1" style="height: 3rem;">
+                    <a href="#" class="nav-link h-100 d-flex flex-row align-items-center ps-2 logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span  class="p-2 fs-6 logout">Выход</span>
+                    </a>
+                    <button class="d-none" type="submit"></button>
+                </li>
+            </form>
+
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  {% block content %}
+
+  {% endblock %}
+  <footer class="main-footer">
+      <span class="text-black">Разработал Гущин Данил "LibraryApp".</span>
+  </footer>
+</div>
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{% static 'core/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'core/adminlte/dist/js/adminlte.min.js' %}"></script>
+    <script src="https://kit.fontawesome.com/cce590ac92.js" crossorigin="anonymous"></script>
+    <script src="{% static 'core/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+       <script type="application/javascript">
+            $('.form-control, .form-select').addClass('rounded-0 shadow-none')
+            $('.logout').on('click', function () {
+                $(this).next().click()
+            })
+            $('.fa-clone').on('click', function () {
+                let text = $(this).data('value')
+                navigator.clipboard.writeText(text)
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Скопировано",
+                  showConfirmButton: false,
+                  timer: 500
+                });
+            })
+       </script>
+
+      {% block script %}
+      {% endblock %}
+</body>
+</html>

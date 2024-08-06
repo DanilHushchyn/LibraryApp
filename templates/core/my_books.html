@@ -1,0 +1,117 @@
+{% extends 'core/base.html' %}
+{%  load static %}
+{# Load the tag library#}
+{% load django_bootstrap5 %}
+{# Load CSS and JavaScript#}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts#}
+{% bootstrap_messages %}
+{# Read the documentation for more information#}
+{% block title %}
+    Каталог книг
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+{% block content %}
+
+    <div class="content-wrapper"  style="height: auto">
+
+    <!-- Main content -->
+    <section class="content pt-5">
+      <!-- Default box -->
+       <div class="card card-primary card-outline">
+          <!-- /.card-header -->
+          <div class="card-body p-0 ">
+              <div class="table-responsive" >
+                 <table id="flat" class="table border-0 table-bordered table-hover linkedRow w-100">
+                      <thead>
+                        <tr>
+                          <th>Название</th>
+                          <th>Дата получения</th>
+                          <th>Кол-во дней на руках</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% if not my_books %}
+                          <caption class="text-center">
+                              <h4>Нет данных...</h4>
+                          </caption>
+                      {% endif %} 
+                      {% for my_book in my_books %}
+                        <tr class="border-0">
+                          <td>
+                              {{ my_book.book.name }}
+                              <i class="fa-solid fa-clone ps-3"
+                                 style="cursor: pointer;color: #343a40;"
+                                 data-value="{{ my_book.book.name }}">
+                              </i>
+                          </td>
+                          <td>{{ my_book.date_took }}</td>
+                          <td style="min-width: 150px">{{ my_book.count_days }}</td>
+                          <td class="text-center"  style="width: 10rem;">
+                              <button type="button" class="btn btn-block btn-danger btn-sm return-book"
+                                  data-value="{{ my_book.book_id }}" >
+                                  Вернуть
+                              </button>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                 </table>
+              </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer d-flex flex-column bg-white">
+              <div class="d-inline-flex justify-content-end">
+                    {% bootstrap_pagination page_obj size='sm' %}
+              </div>
+              <hr style="border-top: 1px solid darkgrey;">
+              <div>
+                  <div class="d-flex flex-row flex-wrap">
+                      <span>Всего книг:&nbsp;</span>
+                      <span class="text-bold" id="rows-count">{{ count }}</span>
+                  </div>
+              </div>
+          </div>
+       </div>
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}
+{% block script %}
+    <script>
+        $('.return-book').on('click', function () {
+            let current_btn = $(this)
+            let book_id = current_btn.data('value')
+            $.ajax({
+                headers: {"X-CSRFToken": $.cookie("csrftoken")},
+                url: `/main/books/return/${book_id}`,         /* Куда отправить запрос */
+                method: 'post',             /* Метод запроса (post или get) */
+                dataType: 'html',
+                context: 'html',
+                success: function (data) {   /* функция которая будет выполнена после успешного запроса.  */
+                    let result = JSON.parse(data);
+                    location.reload(true);
+
+                },
+                error: function(xhr, status, error) {
+                    if (xhr['status'] === 404) {
+                      // Handle 404 error
+                        let result = JSON.parse(xhr['responseText']);
+                        Swal.fire({
+                          position: "center",
+                          icon: "error",
+                          title: result['message'],
+                          showConfirmButton: false,
+                          timer: 1000
+                        });
+                    }
+                }
+            });
+        })
+    </script>
+{% endblock %}

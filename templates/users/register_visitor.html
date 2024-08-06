@@ -1,0 +1,141 @@
+{% load static %}
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{# Read the documentation for more information #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg"   href="{% static 'core/imgs/library.png' %}">
+    <title>Регистрация читателя</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+
+    <link rel="stylesheet" href="{% static 'core/adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/base.css' %}">
+
+    <link rel="stylesheet" href="{% static 'core/adminlte/dist/css/adminlte.css' %}">
+</head>
+<body class="register-page" style="min-height: 542px;">
+<div class="register-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="#" class="h1"><b>Library</b>App</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Зарегистрировать нового читателя</p>
+                <form id="register-form" method="post" action="{% url 'register_visitor' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            {% bootstrap_field form.first_name %}
+                            {% bootstrap_field form.last_name %}
+                            {% bootstrap_field form.username show_help=False placeholder='Имя пользователя (Логин)'%}
+                            {% bootstrap_field form.email %}
+                            {% bootstrap_field form.address %}
+                            {% bootstrap_field form.password %}
+                            {% bootstrap_field form.repeat_password %}
+                        </div>
+                    </div>
+                    <div class="col-12 text-right">
+                         <button type="submit" class="btn btn-block btn-primary">
+                            Регистрация
+                         </button>
+                         <button type="reset" class="btn btn-block btn-danger">
+                            Сбросить
+                         </button>
+                    </div>
+                </form>
+            <div class="social-auth-links text-center">
+
+            </div>
+            <p class="mb-0 text-center">
+                <a href="{% url 'login' %}" class="text-center">У меня уже есть аккаунт</a>
+            </p>          
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" 
+        integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+<script src="{% static 'core/adminlte/dist/js/adminlte.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" 
+        integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $("#register-form").validate({
+    errorClass: "error fail-alert",
+    validClass: "valid success-alert",
+    ignore : '.ignore',
+    rules: {
+        password: {
+            required: true,
+            minlength: 8,
+        },
+        repeat_password: {
+            required: true,
+            minlength: 8,
+            equalTo: "#id_password"
+        },
+        username:{
+            required: true,
+            maxlength: 150,
+        },
+        address:{
+            required: true,
+        },
+        email:{
+            email: true,
+            required: true,
+        },
+         first_name: {
+            required: true,
+        },
+        last_name: {
+            required: true,
+        },
+
+    },
+    messages : {
+        password: {
+            required: "Обязательно укажите пароль",
+            minlength: 'Пароль не менее 8 символов',
+        },
+        repeat_password: {
+            required: "Обязательно повторите пароль",
+            minlength: 'Пароль не менее 8 символов',
+            equalTo: "Пароли не совпадают"
+        },
+        username: {
+            required: "Обязательно укажите Имя пользователя",
+            maxlength: "Не более 150 символов",
+        },               
+        first_name: {
+            required: "Обязательно укажите Имя",
+        },        
+        email: {
+            required: "Обязательно укажите Email",
+            email: "Проверьте правильность Email",
+        },
+        address: {
+            required: "Обязательно укажите Домащний адрес",
+        },
+        last_name: {
+            required: "Обязательно укажите Фамилию",
+        }
+    }
+    });
+</script>
+</body>
+</html>

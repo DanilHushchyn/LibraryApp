@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+{%  load static %}
+{# Load the tag library#}
+{% load django_bootstrap5 %}
+{# Load CSS and JavaScript#}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts#}
+{% bootstrap_messages %}
+{# Read the documentation for more information#}
+{% block title %}
+    Каталог книг
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+{% block content %}
+
+    <div class="content-wrapper"  style="height: auto">
+
+    <!-- Main content -->
+    <section class="content pt-5">
+      <!-- Default box -->
+       <div class="card card-primary card-outline">
+          <!-- /.card-header -->
+          <div class="card-body p-0 ">
+              <div class="table-responsive" >
+                 <table id="flat" class="table border-0 table-bordered table-hover linkedRow w-100">
+                      <thead>
+                        <tr>
+                          <th>Никнейм</th>
+                          <th>Имя</th>
+                          <th>Фамилия</th>
+                          <th>Адрес</th>
+                          <th>Название книги</th>
+                          <th>Дата получения</th>
+                          <th>Кол-во дней на руках</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% if not debtors_books %}
+                          <caption class="text-center">
+                              <h4>Нет данных...</h4>
+                          </caption>
+                      {% endif %} 
+                      {% for debtor_book in debtors_books %}
+                        <tr class="border-0">
+                          <td>{{ debtor_book.visitor.user.username }}</td>
+                          <td>{{ debtor_book.visitor.user.first_name }}</td>
+                          <td>{{ debtor_book.visitor.user.last_name }}</td>
+                          <td>{{ debtor_book.visitor.address }}</td>
+                          <td>
+                              {{ debtor_book.book.name }}
+                              <i class="fa-solid fa-clone ps-3"
+                                 style="cursor: pointer;color: #343a40;"
+                                 data-value="{{ debtor_book.book.name }}">
+                              </i>
+                          </td>
+                          <td>{{ debtor_book.date_took }}</td>
+                          <td style="min-width: 150px">{{ debtor_book.current_days_passed }}</td>
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                 </table>
+              </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer d-flex flex-column bg-white">
+              <div class="d-inline-flex justify-content-end">
+                    {% bootstrap_pagination page_obj size='sm' %}
+              </div>
+              <hr style="border-top: 1px solid darkgrey;">
+              <div>
+                  <div class="d-flex flex-row flex-wrap">
+                      <span>Всего роздано книг:&nbsp;</span>
+                      <span class="text-bold">{{ count }}</span>
+                  </div>
+              </div>
+          </div>
+       </div>
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}
+{% block script %}
+{% endblock %}

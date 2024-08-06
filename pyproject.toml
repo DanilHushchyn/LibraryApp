@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "libraryapp"
+version = "0.1.0"
+description = ""
+authors = ["dhushchyn <dhushchyn@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django-multiselectfield = "^0.1.13"
+django-environ = "^0.11.2"
+django-debug-toolbar = "^4.4.6"
+psycopg2-binary = "^2.9.9"
+django = "^5.0.7"
+django-extensions = "^3.2.3"
+django-allauth = "^64.0.0"
+faker = "^26.0.0"
+django-bootstrap5 = "^24.2"
+djangorestframework = "^3.15.2"
+django-cors-headers = "^4.4.0"
+dj-rest-auth = "^6.0.0"
+drf-psq = "^1.1.0"
+drf-spectacular = "^0.27.2"
+drf-spectacular-sidecar = "^2024.7.1"
+djangorestframework-simplejwt = "^5.3.1"
+django-simple-history = "^3.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
